@@ -1,7 +1,14 @@
 import React, {FC, useEffect, useRef, useState} from "react";
 import {
-    Avatar, ClickAwayListener, Grow,
-    IconButton, Link, MenuItem, MenuList, Paper, Popper,
+    Avatar,
+    ClickAwayListener,
+    Grow,
+    IconButton,
+    Link,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
     styled,
     Toolbar,
     Typography

@@ -1,27 +1,26 @@
 import React from "react";
 import{ NextPage } from 'next';
+import Head from "next/head";
 import { useRouter } from 'next/router'
 import {
-    Avatar,
-    Box,
-    Breadcrumbs,
-    Grid,
-    IconButton,
-    Link, Paper,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TextField,
-    Typography,
-    useMediaQuery
+Avatar,
+Box,
+Breadcrumbs,
+Grid,
+IconButton,
+Link, Paper,
+Stack,
+Table,
+TableBody,
+TableCell,
+TableContainer,
+TableHead,
+TableRow,
+TextField,
+Typography,
 } from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Layout from "@src/layout/layout";
-import Head from "next/head";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
 
@@ -30,7 +29,6 @@ import { orgDetail } from "@src/dummy";
 const Organization: NextPage = () => {
     const router = useRouter();
     const { org, slug } = router.query;
-    const sm = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
     return (
         <Layout>
