@@ -3,21 +3,21 @@ import{ NextPage } from 'next';
 import Head from "next/head";
 import { useRouter } from 'next/router'
 import {
-Avatar,
-Box,
-Breadcrumbs,
-Grid,
-IconButton,
-Link, Paper,
-Stack,
-Table,
-TableBody,
-TableCell,
-TableContainer,
-TableHead,
-TableRow,
-TextField,
-Typography,
+    Avatar,
+    Box,
+    Breadcrumbs,
+    Grid,
+    IconButton,
+    Link, Paper,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+    Typography, useTheme,
 } from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Layout from "@src/layout/layout";
@@ -28,6 +28,7 @@ import { orgDetail } from "@src/dummy";
 
 const Organization: NextPage = () => {
     const router = useRouter();
+    const theme = useTheme();
     const { org, slug } = router.query;
 
     return (
@@ -47,10 +48,13 @@ const Organization: NextPage = () => {
                 <Box sx={{ p: 3 }}>
                     <Stack spacing={1}>
                         <Grid container>
-                            <Grid item xs={4} sm={2}>
-                                <Typography variant="subtitle1">Avatar: </Typography>
+                            <Grid item xs={12} sm={2}>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{ color: theme.palette.grey[500] }}
+                                >Avatar: </Typography>
                             </Grid>
-                            <Grid item xs={8} sm={10}>
+                            <Grid item xs={12} sm={10}>
                                 <Avatar
                                     sx={{ width: 25, height: 25, mt: '0!important' }}
                                     variant="square"
@@ -60,33 +64,52 @@ const Organization: NextPage = () => {
                             </Grid>
                         </Grid>
                         <Grid container>
-                            <Grid item xs={4} sm={2}>
-                                <Typography variant="subtitle1">Description: </Typography>
+                            <Grid item xs={12} sm={2}>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{ color: theme.palette.grey[500] }}
+                                >
+                                    Description:{' '}
+                                </Typography>
                             </Grid>
-                            <Grid item xs={8} sm={10}>
-                                <Typography variant="body1">{orgDetail?.description}</Typography>
+                            <Grid item xs={12} sm={10}>
+                                <Typography variant="body2">{orgDetail?.description}</Typography>
                             </Grid>
                         </Grid>
                         <Grid container>
-                            <Grid item xs={4} sm={2}>
-                                <Typography variant="subtitle1">External URL: </Typography>
+                            <Grid item xs={12} sm={2}>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{ color: theme.palette.grey[500] }}
+                                >
+                                    External URL:{' '}
+                                </Typography>
                             </Grid>
-                            <Grid item xs={8} sm={10}>
+                            <Grid item xs={12} sm={10}>
                                 <Link href={orgDetail?.external_url} target="_blank">
-                                    <Typography variant="body1">{orgDetail?.external_url}</Typography>
+                                    <Typography variant="body2">{orgDetail?.external_url}</Typography>
                                 </Link>
                             </Grid>
                         </Grid>
                         <Grid container>
-                            <Grid item xs={4} sm={2}>
-                                <Typography variant="subtitle1">Added date / person: </Typography>
+                            <Grid item xs={12} sm={2}>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{ color: theme.palette.grey[500] }}
+                                >
+                                    Added date / person:{' '}
+                                </Typography>
                             </Grid>
-                            <Grid item xs={8} sm={10}>
-                                <Typography variant="body1">{orgDetail?.added_by} added at {orgDetail.added_at}</Typography>
+                            <Grid item xs={12} sm={10}>
+                                <Typography variant="body2">{orgDetail?.added_by} added at {orgDetail.added_at}</Typography>
                             </Grid>
                         </Grid>
                     </Stack>
-                    <Stack flexDirection="row" justifyContent="flex-end">
+                    <Stack
+                        flexDirection="row"
+                        justifyContent={{ xs: 'space-between', sm: 'flex-end'}}
+                        sx={{ mt: { xs: 4, sm: 0.5}}}
+                    >
                         <TextField label="Search" color="secondary" variant="filled" size="small" />
                         <IconButton aria-label="delete">
                             <FilterAltIcon />
@@ -113,11 +136,11 @@ const Organization: NextPage = () => {
                                         <TableCell component="th" scope="row">
                                             {row.full_name}
                                         </TableCell>
-                                        <TableCell align="right">{row.private}</TableCell>
+                                        <TableCell align="right">{row.private ? 'Yes' : 'No'}</TableCell>
                                         <TableCell align="right">{row.status}</TableCell>
-                                        <TableCell align="right">{row.stale}</TableCell>
+                                        <TableCell align="right">{row.stale ? 'Yes' : 'No'}</TableCell>
                                         <TableCell align="right">{row.update_count}</TableCell>
-                                        <TableCell align="right">{row.pr_count}</TableCell>
+                                        <TableCell align="right">{row.pr_count || '-'}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

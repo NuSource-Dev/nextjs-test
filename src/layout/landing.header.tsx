@@ -1,22 +1,24 @@
-import React, {FC, useEffect, useRef, useState} from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import {
-    Avatar,
+    Button,
     ClickAwayListener,
+    Container,
+    Divider,
     Grow,
-    IconButton,
     Link,
     MenuItem,
     MenuList,
     Paper,
-    Popper,
+    Popper, Stack,
     Toolbar,
     Typography
 } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const AppBar = dynamic(import('@src/layout/appbar'), { ssr: false });
 
-const Header: FC = (props) => {
+const LandingHeader: FC = (props) => {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -54,34 +56,35 @@ const Header: FC = (props) => {
 
     return (
         <>
-            <AppBar position="sticky">
-                <Toolbar
-                    sx={{
-                        pr: '24px',
-                    }}
-                >
-                    <Typography
-                        component="h1"
-                        variant="h6"
-                        color="inherit"
-                        noWrap
-                        sx={{ flexGrow: 1 }}
-                    >
-                        <Link href="/" sx={{ textDecoration: 'none' }}>
-                            NuSource
-                        </Link>
-                    </Typography>
-                    <IconButton
-                        ref={anchorRef}
-                        id="composition-button"
-                        aria-controls={open ? 'composition-menu' : undefined }
-                        arai-expanded={open ? 'true' : undefined }
-                        onClick={handleToggle}
-                        color="inherit"
-                    >
-                        <Avatar>A</Avatar>
-                    </IconButton>
-                </Toolbar>
+            <AppBar position="sticky" sx={{ background: 'transparent' }}>
+                <Container maxWidth="xl">
+                    <Toolbar sx={{ pr: '24px' }}>
+                        <Stack direction="row" spacing={2} alignItems="baseline" sx={{ flexGrow: 1 }}>
+                            <Typography
+                                component="span"
+                                variant="h6"
+                                color="inherit"
+                                noWrap
+                            >
+                                <Link href="/" sx={{ textDecoration: 'none' }}>NuSource</Link>
+                            </Typography>
+                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Product</Button>
+                            <Button size="small" color="warning">Team</Button>
+                            <Button size="small" color="warning">Enterprise</Button>
+                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Explore</Button>
+                            <Button size="small" color="warning">Marketplace</Button>
+                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Price</Button>
+                        </Stack>
+                        <Stack
+                            direction="row"
+                            divider={<Divider orientation="vertical" flexItem />}
+                            spacing={2}
+                        >
+                            <Button size="small" color="info">Sign In</Button>
+                            <Button size="small" color="info" variant="outlined">Sign Up</Button>
+                        </Stack>
+                    </Toolbar>
+                </Container>
             </AppBar>
             <Popper
                 open={open}
@@ -119,4 +122,4 @@ const Header: FC = (props) => {
     )
 };
 
-export default Header;
+export default LandingHeader;
