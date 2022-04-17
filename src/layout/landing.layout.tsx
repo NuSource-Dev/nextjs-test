@@ -4,7 +4,6 @@ import { styled } from "@mui/material";
 const LandingContainer = styled('div')`
  width: 100%;
  height: 100vh;
- background-image: url("/background.png");
  background-size: 100% 100%;
 `;
 

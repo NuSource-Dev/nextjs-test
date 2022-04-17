@@ -17,7 +17,7 @@ const organizations: Organization[] = [
     {
         display_name: 'Rhys Arkins',
         description: 'Creator of @renovate-bot, Senior Director of Product @WhiteSource',
-        repo_count: 21,
+        repo_count: 3,
         slug: 'rarkins'
     },
     {

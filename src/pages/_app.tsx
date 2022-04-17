@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 
 import { store } from "../redux/store";
-import lightTheme from "../utils/theme/light.theme";
+import theme from "../utils/theme";
 
 type NextPageWithLayout = NextPage & {
     getLayout?: (page: ReactElement) => ReactNode
@@ -21,7 +21,7 @@ function App({Component, pageProps}: AppPropsWithLayout) {
     return(
         <Provider store={store}>
             <ConnectedRouter>
-                <ThemeProvider theme={lightTheme}>
+                <ThemeProvider theme={theme}>
                     <CssBaseline />
                     <Component {...pageProps} />
                 </ThemeProvider>

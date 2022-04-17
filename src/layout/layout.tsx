@@ -1,14 +1,19 @@
 import React, { FC } from "react";
-import { Box } from "@mui/material";
+import {Box, styled} from "@mui/material";
 
+const Container = styled('div')`
+ width: 100%;
+ height: 100vh;
+ background-size: 100% 100%;
+`;
 
 const Layout: FC = (props) => {
 
     const {children} = props;
     return (
-        <Box>
+        <Container>
             {children}
-        </Box>
+        </Container>
     )
 };
 

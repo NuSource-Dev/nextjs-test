@@ -63,17 +63,31 @@ const LandingHeader: FC = (props) => {
                             <Typography
                                 component="span"
                                 variant="h6"
-                                color="inherit"
                                 noWrap
                             >
                                 <Link href="/" sx={{ textDecoration: 'none' }}>NuSource</Link>
                             </Typography>
-                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Product</Button>
+                            <Button
+                                size="small"
+                                color="warning"
+                                endIcon={<KeyboardArrowDownIcon/>}>
+                                Product
+                            </Button>
                             <Button size="small" color="warning">Team</Button>
                             <Button size="small" color="warning">Enterprise</Button>
-                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Explore</Button>
+                            <Button
+                                size="small"
+                                color="warning"
+                                endIcon={<KeyboardArrowDownIcon/>}>
+                                Explore
+                            </Button>
                             <Button size="small" color="warning">Marketplace</Button>
-                            <Button size="small" color="warning" endIcon={<KeyboardArrowDownIcon/>}>Price</Button>
+                            <Button
+                                size="small"
+                                color="warning"
+                                endIcon={<KeyboardArrowDownIcon/>}>
+                                Price
+                            </Button>
                         </Stack>
                         <Stack
                             direction="row"
