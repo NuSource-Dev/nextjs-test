@@ -6,7 +6,7 @@ export interface User {
     vcs_slug: string
 }
 
-const user: User = {
+export const user: User = {
     avatar_url: 'https://avatars.githubusercontent.com/u/6311784?v=4',
     external_url: 'https://github.com/rarkins',
     name: 'Rhys Arkins',

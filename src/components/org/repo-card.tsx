@@ -1,6 +1,6 @@
 import React, {FC} from "react";
-import {Card, Grid, Stack, styled, Typography} from "@mui/material";
-import {Repository} from "@src/dummy";
+import {Card, Grid, Skeleton, Stack, styled, Typography} from "@mui/material";
+import {Repository} from "@src/models";
 
 interface Props {
     repository: Repository;
@@ -147,5 +147,17 @@ const RepoCard: FC<Props> = ({repository}) => {
         </CustomCard>
     );
 };
+
+export const RepoCardSkeleton: FC = () => (
+    <CustomCard>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+        <Skeleton variant="text" sx={{width: '100%'}}/>
+    </CustomCard>
+);
 
 export default RepoCard;

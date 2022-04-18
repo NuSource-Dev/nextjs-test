@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { NextPage } from 'next';
+import React, {useEffect, useState} from "react";
+import {NextPage} from 'next';
 import Head from "next/head";
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import {
     Avatar,
     Box,
-    Breadcrumbs, FormControl,
+    Breadcrumbs,
+    FormControl,
     Grid,
-    IconButton, InputLabel,
-    Link, MenuItem, Select,
+    IconButton,
+    InputLabel,
+    Link,
+    MenuItem,
+    Select,
+    Skeleton,
     Stack,
     TextField,
     Theme,
@@ -17,59 +22,86 @@ import {
 } from "@mui/material";
 import GridViewIcon from '@mui/icons-material/GridView';
 import TableViewIcon from '@mui/icons-material/TableView';
+import {useDispatch, useSelector} from "react-redux";
 import Layout from "@src/layout/layout";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
-import { GridView, TableView } from "@components/org";
-import { orgDetail, Repository } from "@src/dummy";
-import timeFormatter from '@src/utils/helpers/time-formatter';
+import {GridView, TableView} from "@components/org";
+import {Repository} from "@src/models";
+import {timeFormatter} from '@src/utils/helpers';
+import {RootState} from "@src/redux/reducers";
+import {repoLoad} from "@src/redux/actions";
 
 const Organization: NextPage = () => {
+    // Get slug from the url
     const router = useRouter();
-    const sm = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
     const {slug} = router.query;
 
+    // Detect screen size to decide card/table view
+    const sm = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
+    // Get redux state
+    const repoState = useSelector((state: RootState) => state.repo);
+    const user = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch();
+
+    // View mode: GridView | TableView
     const [viewMode, setViewMode] = useState<'grid' | 'table'>('table');
+
+    // Filters applied repositories
     const [repositories, setRepositories] = useState<Repository[]>([]);
 
+    // Filters
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [privateFilter, setPrivate] = useState<string|boolean>('');
+    const [privateFilter, setPrivate] = useState<string | boolean>('');
     const [status, setStatus] = useState<string>('');
-    const [stale, setStale] = useState<string|boolean>('');
+    const [stale, setStale] = useState<string | boolean>('');
     const [manager, setManager] = useState<string>('');
 
+    // Toggle view mode
     const toggleViewMode = () => {
         setViewMode(prevState => {
-            if (prevState === 'table'){
+            if (prevState === 'table') {
                 return 'grid';
             }
             else return 'table';
         });
     };
 
+    // Get boolean value from select field feed "true" OR "false"
     const getBooleanValue = (value: any) => {
         if (value === 'true') return true;
         else if (value === 'false') return false;
         return value;
     };
 
+    // Update repositories when redux state change or page filters had been changed
     useEffect(() => {
-        setRepositories(orgDetail.repositories
-            .filter((elem) =>
-                elem.slug.includes(searchTerm)
-                && (privateFilter === '' || elem.private === privateFilter)
-                && (status === '' || elem.status === status)
-                && (stale === '' || elem.stale === stale)
-                && (manager === '' || elem.managers.includes(manager))
-            )
-        );
+        if (!!repoState.orgDetail)
+            setRepositories(repoState.orgDetail.repositories
+                .filter((elem: Repository) =>
+                    elem.slug.includes(searchTerm)
+                    && (privateFilter === '' || elem.private === privateFilter)
+                    && (status === '' || elem.status === status)
+                    && (stale === '' || elem.stale === stale)
+                    && (manager === '' || elem.managers.includes(manager))
+                )
+            );
     }, [
         searchTerm,
         privateFilter,
         status,
         stale,
-        manager
+        manager,
+        repoState
     ]);
+
+    // Dispatch load detail action at the first load
+    useEffect(() => {
+        if (!repoState.orgDetail || repoState.orgDetail.slug !== slug) {
+            dispatch(repoLoad({username: user.slug, slug: 'github'}));
+        }
+    }, []);
 
     return (
         <Layout>
@@ -82,7 +114,7 @@ const Organization: NextPage = () => {
                 <Breadcrumbs aria-label="breadcrumb">
                     <Typography color="text.primary">Github</Typography>
                     <Typography color="text.primary">
-                        {slug} ({orgDetail.display_name})
+                        {slug} ({repoState.orgDetail?.display_name})
                     </Typography>
                 </Breadcrumbs>
                 <Box sx={{p: 3}}>
@@ -97,12 +129,17 @@ const Organization: NextPage = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>
-                                <Avatar
-                                    sx={{width: 25, height: 25, mt: '0!important'}}
-                                    variant="square"
-                                    src={orgDetail?.avatar_url}
-                                    alt={orgDetail?.display_name}
-                                />
+                                {
+                                    repoState.loading ?
+                                        <Skeleton variant="circular" sx={{width: 25, height: 25}}/>
+                                        : <Avatar
+                                            sx={{width: 25, height: 25, mt: '0!important'}}
+                                            variant="square"
+                                            src={repoState.orgDetail?.avatar_url}
+                                            alt={repoState.orgDetail?.display_name}
+                                        />
+                                }
+
                             </Grid>
                         </Grid>
                         <Grid container>
@@ -115,9 +152,14 @@ const Organization: NextPage = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>
-                                <Typography variant="body2">
-                                    {orgDetail?.description}
-                                </Typography>
+                                {
+                                    repoState.loading ?
+                                        <Skeleton variant="text"/>
+                                        : <Typography variant="body2">
+                                            {repoState.orgDetail?.description}
+                                        </Typography>
+                                }
+
                             </Grid>
                         </Grid>
                         <Grid container>
@@ -130,11 +172,16 @@ const Organization: NextPage = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>
-                                <Link href={orgDetail?.external_url} target="_blank">
-                                    <Typography variant="body2" component="span">
-                                        {orgDetail?.external_url}
-                                    </Typography>
-                                </Link>
+                                {
+                                    repoState.loading ?
+                                        <Skeleton variant="text"/>
+                                        : <Link href={repoState.orgDetail?.external_url} target="_blank">
+                                            <Typography variant="body2" component="span">
+                                                {repoState.orgDetail?.external_url}
+                                            </Typography>
+                                        </Link>
+                                }
+
                             </Grid>
                         </Grid>
                         <Grid container>
@@ -147,18 +194,24 @@ const Organization: NextPage = () => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>
-                                <Typography variant="body2">
-                                    {orgDetail?.added_by} added at {timeFormatter(orgDetail.added_at)}
-                                </Typography>
+                                {
+                                    repoState.loading ?
+                                        <Skeleton variant="text"/>
+                                        : <Typography variant="body2">
+                                            {repoState.orgDetail?.added_by} added at{' '}
+                                            {timeFormatter(repoState.orgDetail?.added_at)}
+                                        </Typography>
+                                }
+
                             </Grid>
                         </Grid>
                     </Stack>
-                    <Box sx={{ mt: 2, mb: 2 }}>
+                    <Box sx={{mt: 2, mb: 2}}>
                         <Typography variant="h5">Repositories</Typography>
                     </Box>
                     <Stack
                         flexDirection="row"
-                        justifyContent="space-between"
+                        gap={4}
                         sx={{mt: {xs: 4, sm: 0.5}}}
                     >
                         <TextField
@@ -176,14 +229,14 @@ const Organization: NextPage = () => {
                                 {
                                     viewMode === 'table' ?
                                         <GridViewIcon/>
-                                        :<TableViewIcon/>
+                                        : <TableViewIcon/>
                                 }
                             </IconButton>
                         </div>
                     </Stack>
                     <Grid container spacing={2} sx={{mt: 1}}>
                         <Grid item xs={12} sm={3}>
-                            <FormControl sx={{ minWidth: 120 }} fullWidth={!sm}>
+                            <FormControl sx={{minWidth: 120}} fullWidth={!sm}>
                                 <InputLabel id="private-select">Private</InputLabel>
                                 <Select
                                     labelId="private-select"
@@ -198,7 +251,7 @@ const Organization: NextPage = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            <FormControl sx={{ minWidth: 120 }} style={{marginTop: 0}}  fullWidth={!sm}>
+                            <FormControl sx={{minWidth: 120}} style={{marginTop: 0}} fullWidth={!sm}>
                                 <InputLabel id="status-select">Status</InputLabel>
                                 <Select
                                     labelId="status-select"
@@ -213,11 +266,11 @@ const Organization: NextPage = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            <FormControl sx={{ minWidth: 120 }} style={{marginTop: 0}} fullWidth={!sm}>
+                            <FormControl sx={{minWidth: 120}} style={{marginTop: 0}} fullWidth={!sm}>
                                 <InputLabel id="stale-select">Stale</InputLabel>
                                 <Select
                                     labelId="stale-select"
-                                    value={status}
+                                    value={stale}
                                     label="Stale"
                                     onChange={(e) => setStale(getBooleanValue(e.target.value))}
                                 >
@@ -228,7 +281,7 @@ const Organization: NextPage = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={3}>
-                            <FormControl sx={{ minWidth: 120 }} style={{marginTop: 0}} fullWidth={!sm}>
+                            <FormControl sx={{minWidth: 120}} style={{marginTop: 0}} fullWidth={!sm}>
                                 <InputLabel id="manager-select">Manager</InputLabel>
                                 <Select
                                     labelId="manager-select"
@@ -245,9 +298,9 @@ const Organization: NextPage = () => {
                         </Grid>
                     </Grid>
                     {
-                        viewMode === 'table' ?
-                            <TableView repositories={repositories}/>
-                            : <GridView repositories={repositories}/>
+                        viewMode === 'table' && sm ?
+                            <TableView repositories={repositories} loading={repoState.loading}/>
+                            : <GridView repositories={repositories} loading={repoState.loading}/>
                     }
                 </Box>
             </Content>

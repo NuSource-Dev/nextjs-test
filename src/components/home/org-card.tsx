@@ -1,12 +1,13 @@
-import React, { FC } from "react";
-import { Avatar, Card, Grid, styled } from "@mui/material";
-import { Organization } from "@src/dummy";
+import React, { FC, MouseEventHandler } from "react";
+import {Avatar, Card, Grid, Skeleton, Stack, styled} from "@mui/material";
+import { Organization } from "@src/models";
 
 interface Props {
-    org: Organization
+    org: Organization,
+    onClick: MouseEventHandler<HTMLDivElement>
 }
 
-const CustomCard = styled(Card)`
+export const CustomCard = styled(Card)`
   display: flex;
   padding: 15px;
   box-shadow: none;
@@ -17,8 +18,8 @@ const CustomCard = styled(Card)`
   background-color: ${(props) => props.theme.palette.background.default};
 `;
 
-const OrgCard: FC<Props> = ({ org }) => {
-    return <CustomCard>
+const OrgCard: FC<Props> = ({ org, onClick }) => {
+    return <CustomCard onClick={onClick}>
         <Avatar
             sx={{ width: 60, height: 60 }}
             variant="square"
@@ -32,5 +33,20 @@ const OrgCard: FC<Props> = ({ org }) => {
         </Grid>
     </CustomCard>;
 };
+
+export const OrgCardSkeleton: FC = () => (
+    <CustomCard>
+        <Skeleton
+            variant="circular"
+            sx={{ width: 60, height: 60 }}
+            animation="wave"
+        />
+        <Stack sx={{width: 'calc(100% - 80px)'}}>
+            <Skeleton variant="text" animation="wave"/>
+            <Skeleton variant="text" animation="wave"/>
+            <Skeleton variant="text" animation="wave"/>
+        </Stack>
+    </CustomCard>
+);
 
 export default OrgCard;

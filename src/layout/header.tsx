@@ -17,7 +17,7 @@ import {
     Typography
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { user, User } from '@src/dummy';
+import { user, User } from '@src/models';
 
 const AppBar = dynamic(import('@src/layout/appbar'), { ssr: false });
 

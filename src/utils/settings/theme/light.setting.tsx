@@ -42,7 +42,7 @@ const lightTheme = {
         color: '#ffffff',
         border: '1px solid #eeeeee',
         padding: '25px 0',
-    },
-}
+    }
+};
 
 export default lightTheme

@@ -15,12 +15,14 @@ const organizations: Organization[] = [
         slug: 'renovatebot'
     },
     {
+        avatar_url: 'https://avatars.githubusercontent.com/u/6311784?v=4',
         display_name: 'Rhys Arkins',
         description: 'Creator of @renovate-bot, Senior Director of Product @WhiteSource',
         repo_count: 3,
         slug: 'rarkins'
     },
     {
+        avatar_url: 'https://avatars.githubusercontent.com/u/81097139?v=4',
         external_url: 'https://github.com/containerbase',
         display_name: 'Container Base',
         repo_count: 15,

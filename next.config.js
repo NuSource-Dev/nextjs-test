@@ -5,4 +5,4 @@ module.exports = {
         PORT: process.env.PORT
     },
     reactStrictMode: true
-}
+};

@@ -8,6 +8,6 @@ const themeSettings = {
 
 const getTheme = (current: 'light' | 'dark') => {
     return themeSettings[current]
-}
+};
 
 export {themeSettings, getTheme};

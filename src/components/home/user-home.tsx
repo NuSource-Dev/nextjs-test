@@ -1,13 +1,30 @@
-import React, { FC } from "react";
+import React, {FC, ReactNode, useEffect} from "react";
+import {useRouter} from "next/router";
 import Head from "next/head";
-import { Box, Breadcrumbs, Grid, Link, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Grid, Typography } from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {orgLoad} from "@src/redux/actions";
+import {RootState} from "@src/redux/reducers";
+import {Organization, User} from "@src/models";
 import Layout from "@src/layout/layout";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
-import { OrgCard } from "@components/home";
-import { Organization, organizations } from "@src/dummy";
+import { OrgCard, OrgCardSkeleton } from "@components/home";
 
-const UserHome: FC = props => {
+interface Props {
+    user: User;
+}
+
+const UserHome: FC<Props> = ({user}) => {
+    const router = useRouter();
+    const orgState = useSelector((state: RootState) => state.org);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (orgState.orgs.length === 0)
+            dispatch(orgLoad({username: user.slug}));
+    }, []);
+
     return (
         <Layout>
             <Head>
@@ -23,21 +40,20 @@ const UserHome: FC = props => {
                     <Typography variant="h5" sx={{mb: 4}}>Organizations</Typography>
                     <Grid container spacing={2}>
                         {
-                            organizations.map((organization: Organization) =>
-                                (<Grid
-                                    item
-                                    lg={3}
-                                    md={4}
-                                    sm={6}
-                                    xs={12}
-                                    key={organization.slug}
-                                >
-                                    <Link
-                                        href={`/github/${organization.slug}`}
-                                        sx={{textDecoration: 'none'}}>
-                                        <OrgCard org={organization}/>
-                                    </Link>
-                                </Grid>))
+                            orgState.loading
+                                ?[1,1,1,1].map((val, index) => (
+                                    <Grid item lg={3} md={4} sm={6} xs={12} key={index}>
+                                        <OrgCardSkeleton/>
+                                    </Grid>
+                                ))
+                                :orgState.orgs.map((organization: Organization) =>
+                                    (<Grid item lg={3} md={4} sm={6} xs={12} key={organization.slug}>
+                                        <OrgCard
+                                            org={organization}
+                                            onClick={() => router.push(`/github/${organization.slug}`)}
+                                        />
+                                    </Grid>)
+                                )
                         }
                     </Grid>
                 </Box>
