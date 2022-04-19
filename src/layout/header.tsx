@@ -2,7 +2,6 @@ import React, {FC, useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import {
     Avatar,
-    Button,
     ClickAwayListener,
     Container,
     Divider,
@@ -16,12 +15,16 @@ import {
     Toolbar,
     Typography
 } from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { user, User } from '@src/models';
+import {useRouter} from "next/router";
 
 const AppBar = dynamic(import('@src/layout/appbar'), { ssr: false });
 
-const Header: FC = (props) => {
+interface Props {
+    user: any
+}
+
+const Header: FC<Props> = ({ user }) => {
+    const router = useRouter();
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -37,6 +40,14 @@ const Header: FC = (props) => {
             return;
         }
         setOpen(false);
+    };
+
+    const logout = () => {
+        fetch(`/api/user/logout`)
+            .then(res => {
+                router.replace('/login')
+            })
+            .catch(e=> console.log(e));
     };
 
     function handleListKeyDown(event: React.KeyboardEvent) {
@@ -126,8 +137,10 @@ const Header: FC = (props) => {
                                     aria-labelledby="composition-button"
                                     onKeyDown={handleListKeyDown}
                                 >
-                                    <MenuItem onClick={handleClose}>Signed in as {user.name} ({user.vcs_slug})</MenuItem>
-                                    <MenuItem onClick={handleClose}>Sign out</MenuItem>
+                                    <MenuItem>
+                                        Signed in as {user.name} ({user.vcs_slug})
+                                    </MenuItem>
+                                    <MenuItem onClick={logout}>Sign out</MenuItem>
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>

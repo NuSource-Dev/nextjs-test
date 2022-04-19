@@ -6,10 +6,8 @@ export class GithubApiProvider extends Api{
         super('/api');
     }
 
-    login(username: string, password: string){
-        return this.instance.post('/login', {
-            username, password
-        });
+    fetchUser(){
+        return this.instance.post('/user');
     }
     fetchOrganizations(username: string){
         return this.instance.get(`/orgs`);

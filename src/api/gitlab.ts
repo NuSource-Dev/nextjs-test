@@ -6,10 +6,8 @@ export class GitLabApiProvider extends Api{
         super('/');
     }
 
-    login(username: string, password: string){
-        return this.instance.post('/login', {
-            username, password
-        });
+    fetchUser(){
+        return this.instance.post('/user');
     }
 
     fetchOrganizations(username: string){

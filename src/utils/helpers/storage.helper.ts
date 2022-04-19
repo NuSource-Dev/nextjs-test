@@ -4,8 +4,7 @@ export const loadState = () => {
         if (serializedState === null) {
             return undefined
         }
-        const json =  JSON.parse(serializedState);
-        return {router: json.router, theme: json.theme, auth: {user: json.user, loading: false}};
+        return JSON.parse(serializedState);
     } catch (err) {
         return undefined
     }
@@ -15,8 +14,7 @@ export const saveState = (state: any) => {
     try {
         const serializedState = JSON.stringify({
             router: state.router,
-            theme: state.theme,
-            user: state.auth.user
+            theme: state.theme
         });
         localStorage.setItem("state", serializedState)
     } catch {

@@ -1,19 +1,33 @@
-import React, { FC } from "react";
-import {Box, styled} from "@mui/material";
+import React, {FC, ReactNode, useEffect} from "react";
+import {useRouter} from "next/router";
+import {styled} from "@mui/material";
+import FullScreenLoading from "@components/home/loader-full-screen";
 
 const Container = styled('div')`
  width: 100%;
  height: 100vh;
- background-size: 100% 100%;
 `;
 
-const Layout: FC = (props) => {
+interface Props {
+    user: any,
+    children?: ReactNode
+}
 
-    const {children} = props;
+const Layout: FC<Props> = ({ user, children}) => {
+    const router = useRouter();
+
+    useEffect(()=>{
+        if (!user) {
+            router.replace('/login');
+        }
+    }, []);
+
     return (
-        <Container>
-            {children}
-        </Container>
+            user?
+                <Container>
+                    {children}
+                    </Container>
+                :<FullScreenLoading/>
     )
 };
 

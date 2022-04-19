@@ -1,32 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {NextPage} from 'next';
-import { LandingPage, UserHome, FullScreenLoader } from '@components/home';
-import {useDispatch, useSelector } from "react-redux";
-import {RootState} from "@src/redux/reducers";
-import { login } from "@src/redux/actions";
+import {LandingPage, UserHome} from '@components/home';
+import {withSessionSsr} from "@src/utils/helpers/iron-session";
 
+interface Props {
+    user: any
+}
 
-const Home: NextPage = () => {
-    const user = useSelector((state: RootState) => state.auth.user);
-    const loading = useSelector((state: RootState) => state.auth.loading);
-    const dispatch = useDispatch();
-    const [mounted, setMounted] = useState(false);
+export const getServerSideProps = withSessionSsr(
+    async function getServerSideProps({req}) {
+        const user = req.session.user;
 
-    useEffect(() => {
-        if (!user)
-            dispatch(login({username: 'sdf', password: 'sdf'}));
-    }, [user]);
+        return {
+            props: {
+                user: user || null
+            },
+        };
+    },
+);
 
-    useEffect(()=>{
-        setMounted(true);
-    }, []);
+const Home: NextPage<Props> = ({user}) => {
 
     return (
-        mounted ?
-            loading? <FullScreenLoader/>
-                : !!user ? <UserHome user={user}/>
-                : <LandingPage/>
-            : <FullScreenLoader/>
+        user ?
+            <UserHome user={user}/>
+            : <LandingPage/>
     );
 };
 

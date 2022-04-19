@@ -15,10 +15,12 @@ import {
     Typography
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {useRouter} from "next/router";
 
 const AppBar = dynamic(import('@src/layout/appbar'), { ssr: false });
 
 const LandingHeader: FC = (props) => {
+    const router = useRouter();
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -94,7 +96,13 @@ const LandingHeader: FC = (props) => {
                             divider={<Divider orientation="vertical" flexItem />}
                             spacing={2}
                         >
-                            <Button size="small" color="info">Sign In</Button>
+                            <Button
+                                size="small"
+                                color="info"
+                                onClick={() => router.push('/login')}
+                            >
+                                Sign In
+                            </Button>
                             <Button size="small" color="info" variant="outlined">Sign Up</Button>
                         </Stack>
                     </Toolbar>

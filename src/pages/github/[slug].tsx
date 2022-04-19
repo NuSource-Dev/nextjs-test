@@ -31,8 +31,25 @@ import {Repository} from "@src/models";
 import {timeFormatter} from '@src/utils/helpers';
 import {RootState} from "@src/redux/reducers";
 import {repoLoad} from "@src/redux/actions";
+import {withSessionSsr} from "@src/utils/helpers/iron-session";
 
-const Organization: NextPage = () => {
+interface Props {
+    user: any
+}
+
+export const getServerSideProps = withSessionSsr(
+    async function getServerSideProps({req}) {
+        const user = req.session.user;
+
+        return {
+            props: {
+                user: user || null
+            },
+        };
+    },
+);
+
+const Organization: NextPage<Props> = ({ user }) => {
     // Get slug from the url
     const router = useRouter();
     const {slug} = router.query;
@@ -42,7 +59,6 @@ const Organization: NextPage = () => {
 
     // Get redux state
     const repoState = useSelector((state: RootState) => state.repo);
-    const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
 
     // View mode: GridView | TableView
@@ -99,17 +115,17 @@ const Organization: NextPage = () => {
     // Dispatch load detail action at the first load
     useEffect(() => {
         if (!repoState.orgDetail || repoState.orgDetail.slug !== slug) {
-            dispatch(repoLoad({username: user.slug, slug: 'github'}));
+            dispatch(repoLoad({username: user?.slug, slug: 'github'}));
         }
     }, []);
 
     return (
-        <Layout>
+        <Layout user={user}>
             <Head>
                 <title>Organization - NuSource</title>
                 <meta name="description" content="Organization"/>
             </Head>
-            <Header/>
+            <Header user={user}/>
             <Content>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Typography color="text.primary">Github</Typography>

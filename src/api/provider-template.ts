@@ -1,5 +1,4 @@
 import axios, {AxiosInstance, AxiosResponse} from "axios";
-import {string} from "prop-types";
 
 export abstract class Api {
     public instance: AxiosInstance;
@@ -14,7 +13,7 @@ export abstract class Api {
         })
     }
 
-    login(username: string, password: string){
+    fetchUser(){
         return new Promise(()=> ({} as AxiosResponse));
     }
 

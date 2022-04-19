@@ -26,12 +26,12 @@ const UserHome: FC<Props> = ({user}) => {
     }, []);
 
     return (
-        <Layout>
+        <Layout user={user}>
             <Head>
                 <title>Home - NuSource</title>
                 <meta name="description" content="NuSource home page"/>
             </Head>
-            <Header/>
+            <Header user={user}/>
             <Content>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Typography color="text.primary">Home</Typography>
