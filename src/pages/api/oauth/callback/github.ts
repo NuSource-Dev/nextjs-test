@@ -1,6 +1,7 @@
 import axios from 'axios';
 import withSessionRoute from '@src/utils/helpers/iron-session';
-import { user } from "@src/models";
+import {user} from "@src/models";
+import {Provider} from "@src/api/provider-template";
 
 const axiosInstance = axios.create({
     baseURL: 'https://github.com',
@@ -25,11 +26,14 @@ function handler(req: any, res: any) {
             code
         })
         .then((response) => {
-            req.session.user = {
-                ...user,
-                ...response.data
-            };
             if (!!response.data.access_token) {
+
+                req.session.user = {
+                    ...user,
+                    ...response.data.access_token,
+                    auth_provider: Provider.github
+                };
+
                 req.session.save().then(() => {
                     res.redirect(301, '/');
                 });

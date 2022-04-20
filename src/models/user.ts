@@ -1,9 +1,13 @@
+import {Provider} from "@src/api/provider-template";
+
 export interface User {
     avatar_url: string;
     external_url: string;
     name: string;
     slug: string;
-    vcs_slug: string
+    vcs_slug: string;
+    access_token?: string;
+    auth_provider?: Provider
 }
 
 export const user: User = {

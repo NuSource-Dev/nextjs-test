@@ -9,6 +9,7 @@ import GitLabIcon from '../../assets/icons/gitlab.svg';
 import AuthLayout from '../../layout/auth.layout';
 import {AuthHeader, AuthBrand, AuthContent} from "../../components/auth/index";
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
+import {User} from "@src/models";
 
 
 export const getServerSideProps = withSessionSsr(
@@ -22,14 +23,14 @@ export const getServerSideProps = withSessionSsr(
             props: {
                 user: user || null,
                 client_ids
-            },
+            }
         };
-    },
+    }
 );
 
 interface Props {
     client_ids: any,
-    user: any
+    user?: User
 }
 
 const Index: NextPage<Props> = ({ client_ids, user }) => {

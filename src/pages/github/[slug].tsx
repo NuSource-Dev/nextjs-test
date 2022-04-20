@@ -27,14 +27,14 @@ import Layout from "@src/layout/layout";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
 import {GridView, TableView} from "@components/org";
-import {Repository} from "@src/models";
+import {Repository, User} from "@src/models";
 import {timeFormatter} from '@src/utils/helpers';
 import {RootState} from "@src/redux/reducers";
 import {repoLoad} from "@src/redux/actions";
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
 
 interface Props {
-    user: any
+    user?: User
 }
 
 export const getServerSideProps = withSessionSsr(
@@ -44,9 +44,9 @@ export const getServerSideProps = withSessionSsr(
         return {
             props: {
                 user: user || null
-            },
+            }
         };
-    },
+    }
 );
 
 const Organization: NextPage<Props> = ({ user }) => {

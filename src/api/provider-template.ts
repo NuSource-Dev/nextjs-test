@@ -27,6 +27,6 @@ export abstract class Api {
 }
 
 export enum Provider {
-    github,
-    gitlab
+    github = 'GITHUB_OAUTH',
+    gitlab = 'GITLAB_OAUTH'
 }
