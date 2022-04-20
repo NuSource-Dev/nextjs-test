@@ -136,20 +136,20 @@ const Organization: NextPage<Props> = ({ user }) => {
                 <Box sx={{p: 3}}>
                     <Stack spacing={1}>
                         <Grid container>
-                            <Grid item xs={12} sm={2}>
+                            <Grid item xs={4} sm={2}>
                                 <Typography
                                     variant="subtitle1"
                                     color="text.secondary"
                                 >
-                                    Avatar:{' '}
+                                    Avatar:
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12} sm={10}>
+                            <Grid item xs={8} sm={10}>
                                 {
                                     repoState.loading ?
                                         <Skeleton variant="circular" sx={{width: 25, height: 25}}/>
                                         : <Avatar
-                                            sx={{width: 25, height: 25, mt: '0!important'}}
+                                            sx={{width: 25, height: 25}}
                                             variant="square"
                                             src={repoState.orgDetail?.avatar_url}
                                             alt={repoState.orgDetail?.display_name}
@@ -175,7 +175,6 @@ const Organization: NextPage<Props> = ({ user }) => {
                                             {repoState.orgDetail?.description}
                                         </Typography>
                                 }
-
                             </Grid>
                         </Grid>
                         <Grid container>
