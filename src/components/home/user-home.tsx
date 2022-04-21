@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import {useRouter} from "next/router";
 import Head from "next/head";
 import { Box, Breadcrumbs, Grid, Typography } from "@mui/material";
