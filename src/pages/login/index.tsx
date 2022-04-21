@@ -43,7 +43,7 @@ const Index: NextPage<Props> = ({ client_ids, user }) => {
     });
 
     const githubLogin = () => {
-        router.push(`https://github.com/login/oauth/authorize?client_id=${client_ids.github}&login=&scope=repo,user`);
+        router.push(`https://github.com/login/oauth/authorize?client_id=${client_ids.github}&redirect_uri=${window.location.origin}/api/oauth/callback/github&login=&scope=repo,user`);
     };
 
     return (
@@ -74,7 +74,7 @@ const Index: NextPage<Props> = ({ client_ids, user }) => {
                             fullWidth
                             color="primary"
                             variant="outlined"
-                            startIcon={<Image src={GitLabIcon} width={20} height={20} />}
+                            startIcon={<Image src={GitLabIcon} width={20} height={20} alt="Gitlab" />}
                         >
                             Sign in with Gitlab
                         </Button>

@@ -117,10 +117,10 @@ const Organization: NextPage<Props> = ({ user }) => {
         if (!repoState.orgDetail || repoState.orgDetail.slug !== slug) {
             dispatch(repoLoad({username: user?.slug, slug: 'github'}));
         }
-    }, []);
+    }, [user, dispatch, slug, repoState.orgDetail]);
 
     return (
-        <Layout user={user}>
+        <Layout>
             <Head>
                 <title>Organization - NuSource</title>
                 <meta name="description" content="Organization"/>

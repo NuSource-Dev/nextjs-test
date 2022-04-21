@@ -23,7 +23,7 @@ export const getServerSideProps = withSessionSsr(
 const Home: NextPage<Props> = ({user}) => {
 
     return (
-        user ?
+        user?
             <UserHome user={user}/>
             : <LandingPage/>
     );

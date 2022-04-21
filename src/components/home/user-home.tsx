@@ -23,10 +23,10 @@ const UserHome: FC<Props> = ({user}) => {
     useEffect(() => {
         if (orgState.orgs.length === 0)
             dispatch(orgLoad({username: user.slug}));
-    }, []);
+    }, [user, orgState.orgs.length, dispatch]);
 
     return (
-        <Layout user={user}>
+        <Layout>
             <Head>
                 <title>Home - NuSource</title>
                 <meta name="description" content="NuSource home page"/>

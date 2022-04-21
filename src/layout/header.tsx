@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import {
-    Avatar,
+    Avatar, Button, ButtonProps,
     ClickAwayListener,
     Container,
     Divider,
@@ -11,16 +11,27 @@ import {
     MenuItem,
     MenuList,
     Paper,
-    Popper, Stack,
+    Popper,
+    Stack, styled,
     Toolbar,
     Typography
 } from "@mui/material";
 import {useRouter} from "next/router";
+import {User} from "@src/models";
+import { purple } from '@mui/material/colors';
 
 const AppBar = dynamic(import('@src/layout/appbar'), { ssr: false });
 
+const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText(purple[500]),
+    borderColor: theme.palette.getContrastText(purple[700]),
+    '&:hover': {
+        borderColor: theme.palette.getContrastText(purple[400])
+    }
+}));
+
 interface Props {
-    user: any
+    user?: User
 }
 
 const Header: FC<Props> = ({ user }) => {
@@ -96,19 +107,30 @@ const Header: FC<Props> = ({ user }) => {
                             divider={<Divider orientation="vertical" flexItem />}
                             spacing={2}
                         >
-                            <IconButton
-                                ref={anchorRef}
-                                id="composition-button"
-                                aria-controls={open ? 'composition-menu' : undefined }
-                                arai-expanded={open ? 'true' : undefined }
-                                onClick={handleToggle}
-                                color="inherit"
-                            >
-                                <Avatar
-                                    src={user.avatar_url}
-                                    alt={user.name}
-                                />
-                            </IconButton>
+                            {
+                                user ?
+                                    <IconButton
+                                        ref={anchorRef}
+                                        id="composition-button"
+                                        aria-controls={open ? 'composition-menu' : undefined }
+                                        arai-expanded={open ? 'true' : undefined }
+                                        onClick={handleToggle}
+                                        color="inherit"
+                                    >
+                                        <Avatar
+                                            src={user.avatar_url}
+                                            alt={user.name}
+                                        />
+                                    </IconButton>
+                                    : <ColorButton
+                                        variant="outlined"
+                                        color="primary"
+                                        size="small"
+                                        onClick={() => router.push('/login')}
+                                    >
+                                        Login
+                                    </ColorButton>
+                            }
                         </Stack>
                     </Toolbar>
                 </Container>
@@ -138,7 +160,7 @@ const Header: FC<Props> = ({ user }) => {
                                     onKeyDown={handleListKeyDown}
                                 >
                                     <MenuItem>
-                                        Signed in as {user.name} ({user.vcs_slug})
+                                        Signed in as {user?.name} ({user?.vcs_slug})
                                     </MenuItem>
                                     <MenuItem onClick={logout}>Sign out</MenuItem>
                                 </MenuList>
