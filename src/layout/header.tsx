@@ -54,7 +54,10 @@ const Header: FC<Props> = ({ user }) => {
     };
 
     const logout = () => {
-        fetch(`/api/user/logout`)
+        fetch(`/api/user/logout`, {
+            method: 'POST',
+            cache: 'no-cache'
+        })
             .then(res => {
                 router.replace('/login')
             })
