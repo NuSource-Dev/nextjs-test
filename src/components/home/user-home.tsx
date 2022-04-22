@@ -46,6 +46,15 @@ const UserHome: FC<Props> = ({user}) => {
                                         <OrgCardSkeleton/>
                                     </Grid>
                                 ))
+                                : orgState.orgs.length !== 0
+                                ? <Grid item xs={12}>
+                                    <Typography align="center" variant="h6">
+                                        No organization!
+                                    </Typography>
+                                    <Typography align="center" variant="body1">
+                                        You don&apos;t have any organization.
+                                    </Typography>
+                                </Grid>
                                 :orgState.orgs.map((organization: Organization) =>
                                     (<Grid item lg={3} md={4} sm={6} xs={12} key={organization.slug}>
                                         <OrgCard
