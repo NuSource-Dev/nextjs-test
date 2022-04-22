@@ -1,17 +1,8 @@
-import axios from 'axios';
 import withSessionRoute from '@src/utils/helpers/iron-session';
-import {user} from "@src/models";
 import {Provider} from "@src/api/provider-template";
+import {createAxiosInstance} from "@src/utils/helpers";
 
-const axiosInstance = axios.create({
-    baseURL: 'https://github.com',
-    headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true",
-        "Accept": "application/json"
-    }
-});
+const axiosInstance = createAxiosInstance('https://github.com');
 
 export default withSessionRoute(handler);
 
@@ -28,14 +19,30 @@ function handler(req: any, res: any) {
         .then((response) => {
             if (!!response.data.access_token) {
 
-                req.session.user = {
-                    ...user,
-                    ...response.data.access_token,
-                    auth_provider: Provider.github
+                const user = {
+                    access_token: response.data.access_token,
+                    vcs_slug: Provider.github
                 };
 
-                req.session.save().then(() => {
-                    res.redirect(301, '/');
+                axiosInstance.get('/user', {
+                    baseURL: 'https://api.github.com',
+                    headers: {
+                        'Authorization': `Bearer ${response.data.access_token}`
+                    }
+                }).then(userRes => {
+                    req.session.user = {
+                        ...user,
+                        avatar_url: userRes.data.avatar_url,
+                        external_url: userRes.data.html_url,
+                        name: userRes.data.name,
+                        slug: userRes.data.login,
+                    };
+
+                    req.session.save().then(() => {
+                        res.redirect(301, '/');
+                    });
+                }).catch((error) => {
+                    res.redirect(301, '/login');
                 });
             }else {
                 res.redirect(301, '/login');

@@ -1,11 +1,11 @@
-import {OrgDetail} from "@src/models";
 import {RepoAction} from "@src/redux/actions";
 import RepoType from "@src/redux/types/repo.types";
+import {Repository} from "@src/models";
 
 interface RepoState {
     error?: any;
     loading: boolean;
-    orgDetail?: OrgDetail;
+    repos?: Repository[];
 }
 
 const initState: RepoState = {
@@ -24,7 +24,7 @@ export default (state = initState, action: RepoAction): RepoState => {
             return {
                 ...state,
                 loading: false,
-                orgDetail: action.payload?.orgDetail
+                repos: action.payload?.repos
             };
         case RepoType.fetchRepoFailed:
             return {

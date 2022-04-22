@@ -1,19 +1,20 @@
-import { Api } from "@src/api/provider-template";
+import {Api} from "@src/api/provider-template";
 
 export class GithubApiProvider extends Api{
 
     constructor() {
-        super('/api');
+        super('/api/github');
     }
 
-    fetchUser(){
-        return this.instance.post('/user');
-    }
-    fetchOrganizations(username: string){
-        return this.instance.get(`/orgs`);
+    fetchOrganizations(){
+        return this.instance.get(`/org`);
     }
 
-    fetchOrgDetails(username: string, orgSlug: string){
-        return this.instance.get(`/org-dtl`);
+    fetchOrgDetails(slug: string){
+        return this.instance.get(`/org/detail/${slug}`);
+    }
+
+    fetchOrgRepositories(org: string){
+        return this.instance.get(`/repo/${org}`)
     }
 }

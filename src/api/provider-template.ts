@@ -2,6 +2,7 @@ import axios, {AxiosInstance, AxiosResponse} from "axios";
 
 export abstract class Api {
     public instance: AxiosInstance;
+    public name: Provider;
     protected constructor(baseUrl: string) {
         this.instance = axios.create({
             baseURL: baseUrl,
@@ -10,23 +11,24 @@ export abstract class Api {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Credentials": "true"
             }
-        })
+        });
+        this.name = Provider.github;
     }
 
-    fetchUser(){
+    fetchOrganizations(){
         return new Promise(()=> ({} as AxiosResponse));
     }
 
-    fetchOrganizations(username: string){
+    fetchOrgDetails(slug: any){
         return new Promise(()=> ({} as AxiosResponse));
     }
 
-    fetchOrgDetails(username: string, orgSlug: string){
+    fetchOrgRepositories(org: any){
         return new Promise(()=> ({} as AxiosResponse));
     }
 }
 
 export enum Provider {
-    github = 'GITHUB_OAUTH',
-    gitlab = 'GITLAB_OAUTH'
+    github = 'github',
+    gitlab = 'gitlab'
 }

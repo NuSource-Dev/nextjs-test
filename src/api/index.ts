@@ -28,8 +28,18 @@ export class ApiProvider {
         }
     }
 
-    get provider (): Api {
-        return this.currentApiProvider;
+    get getProvider(): Provider {
+        return this.currentApiProvider.name;
+    }
+
+    provider (provider?: Provider): Api {
+        if (provider === Provider.github) {
+            return this.github;
+        }else if (provider === Provider.gitlab) {
+            return this.gitlab;
+        }else {
+            return this.currentApiProvider;
+        }
     }
 }
 

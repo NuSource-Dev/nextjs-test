@@ -22,7 +22,7 @@ const UserHome: FC<Props> = ({user}) => {
 
     useEffect(() => {
         if (orgState.orgs.length === 0)
-            dispatch(orgLoad({username: user.slug}));
+            dispatch(orgLoad(user.vcs_slug));
     }, [user, orgState.orgs.length, dispatch]);
 
     return (

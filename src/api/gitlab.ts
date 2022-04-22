@@ -1,20 +1,22 @@
-import { Api } from "@src/api/provider-template";
+import {Api, Provider} from "@src/api/provider-template";
+import {AxiosResponse} from "axios";
 
 export class GitLabApiProvider extends Api{
 
     constructor() {
-        super('/');
+        super('/api/gitlab');
+        this.name = Provider.gitlab;
     }
 
-    fetchUser(){
-        return this.instance.post('/user');
+    fetchOrganizations(){
+        return this.instance.get(`/orgs`);
     }
 
-    fetchOrganizations(username: string){
-        return this.instance.get(`/orgs/${username}`);
+    fetchOrgDetails(slug?: string | string[]){
+        return this.instance.get(`/org-dtl`);
     }
 
-    fetchOrgDetails(username: string, orgSlug: string){
-        return this.instance.get(`/org-dtl/${username}/${orgSlug}`);
+    fetchOrgRepositories(org: string){
+        return new Promise(()=> ({} as AxiosResponse));
     }
 }

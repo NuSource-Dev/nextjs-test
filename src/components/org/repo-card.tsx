@@ -1,6 +1,7 @@
 import React, {FC} from "react";
 import {Card, Grid, Skeleton, Stack, styled, Typography} from "@mui/material";
 import {Repository} from "@src/models";
+import {timeFormatter} from "@src/utils/helpers";
 
 interface Props {
     repository: Repository;
@@ -30,7 +31,6 @@ const RepoCard: FC<Props> = ({repository}) => {
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
                         {repository.full_name}
                     </Typography>
@@ -48,7 +48,6 @@ const RepoCard: FC<Props> = ({repository}) => {
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
                         {repository.slug}
                     </Typography>
@@ -66,7 +65,6 @@ const RepoCard: FC<Props> = ({repository}) => {
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
                         {repository.private ? 'Yes' : 'No'}
                     </Typography>
@@ -84,9 +82,8 @@ const RepoCard: FC<Props> = ({repository}) => {
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
-                        {repository.status}
+                        {repository.status ? 'Disabled' : 'Enabled'}
                     </Typography>
                 </Grid>
             </Grid>
@@ -96,15 +93,14 @@ const RepoCard: FC<Props> = ({repository}) => {
                         variant="subtitle2"
                         color="text.secondary"
                     >
-                        Stale:
+                        Forks count:
                     </Typography>
                 </Grid>
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
-                        {repository.stale ? 'Yes' : 'No'}
+                        {repository.forks_count}
                     </Typography>
                 </Grid>
             </Grid>
@@ -114,15 +110,14 @@ const RepoCard: FC<Props> = ({repository}) => {
                         variant="subtitle2"
                         color="text.secondary"
                     >
-                        Update Count:
+                        Language:
                     </Typography>
                 </Grid>
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
-                        {repository.update_count}
+                        {repository.language}
                     </Typography>
                 </Grid>
             </Grid>
@@ -132,15 +127,14 @@ const RepoCard: FC<Props> = ({repository}) => {
                         variant="subtitle2"
                         color="text.secondary"
                     >
-                        PR count:
+                        Pushed at:
                     </Typography>
                 </Grid>
                 <Grid item xs={7}>
                     <Typography
                         variant="body2"
-                        sx={{fontWeight: 'bold'}}
                     >
-                        {repository.pr_count || '-'}
+                        {timeFormatter(repository.pushed_at)}
                     </Typography>
                 </Grid>
             </Grid>

@@ -9,6 +9,7 @@ import {
     TableRow
 } from "@mui/material";
 import {Repository} from "@src/models";
+import {timeFormatter} from "@src/utils/helpers";
 
 interface Props {
     loading: boolean
@@ -25,9 +26,9 @@ const TableView: FC<Props> = ({repositories, loading = false}) => {
                         <TableCell align="center">Slug</TableCell>
                         <TableCell align="center">Is private</TableCell>
                         <TableCell align="center">Status</TableCell>
-                        <TableCell align="center">Stale</TableCell>
-                        <TableCell align="center">Update count</TableCell>
-                        <TableCell align="center">PR count</TableCell>
+                        <TableCell align="center">Forks count</TableCell>
+                        <TableCell align="center">Language</TableCell>
+                        <TableCell align="center">Pushed At</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -54,10 +55,10 @@ const TableView: FC<Props> = ({repositories, loading = false}) => {
                                     <TableCell>{row.full_name}</TableCell>
                                     <TableCell align="center">{row.slug}</TableCell>
                                     <TableCell align="center">{row.private ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell align="center">{row.status}</TableCell>
-                                    <TableCell align="center">{row.stale ? 'Yes' : 'No'}</TableCell>
-                                    <TableCell align="center">{row.update_count}</TableCell>
-                                    <TableCell align="center">{row.pr_count || '-'}</TableCell>
+                                    <TableCell align="center">{row.status ? 'Disabled' : 'Enabled'}</TableCell>
+                                    <TableCell align="center">{row.forks_count}</TableCell>
+                                    <TableCell align="center">{row.language}</TableCell>
+                                    <TableCell align="center">{timeFormatter(row.pushed_at)}</TableCell>
                                 </TableRow>
                             ))}
                 </TableBody>

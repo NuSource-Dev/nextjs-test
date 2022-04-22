@@ -14,6 +14,7 @@ export const CustomCard = styled(Card)`
   justify-content: space-between;
   font-size: 14px;
   cursor: pointer;
+  gap: 10px;
   border: 1px solid ${(props) => props.theme.palette.grey.A700};
   background-color: ${(props) => props.theme.palette.background.default};
 `;
@@ -26,10 +27,10 @@ const OrgCard: FC<Props> = ({ org, onClick }) => {
             src={org.avatar_url}
             alt={org.display_name}
         />
-        <Grid container direction="column" alignItems="flex-end">
+        <Grid container direction="column">
             <Grid item>{org.slug}</Grid>
             <Grid item>{org.display_name}</Grid>
-            <Grid item>{org.repo_count}</Grid>
+            <Grid item sx={{ fontSize: 13, color: 'text.secondary' }}>{org.description}</Grid>
         </Grid>
     </CustomCard>;
 };
