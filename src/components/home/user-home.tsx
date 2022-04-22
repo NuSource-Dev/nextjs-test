@@ -46,7 +46,7 @@ const UserHome: FC<Props> = ({user}) => {
                                         <OrgCardSkeleton/>
                                     </Grid>
                                 ))
-                                : orgState.orgs.length !== 0
+                                : orgState.orgs.length === 0
                                 ? <Grid item xs={12}>
                                     <Typography align="center" variant="h6">
                                         No organization!
