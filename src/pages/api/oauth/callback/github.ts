@@ -1,20 +1,26 @@
 import withSessionRoute from '@src/utils/helpers/iron-session';
 import {createAxiosInstance} from "@src/utils/helpers";
 import axios from "axios";
+import {redirect} from "next/dist/server/api-utils";
 
 const axiosInstance = createAxiosInstance('https://github.com');
 
 export default withSessionRoute(handler);
 
 function handler(req: any, res: any) {
-    const {code} = req.query;
 
-    if (!code) {
+    if (req.session.user) {
+       return res.redirect(301, '/');
+    }
+
+    const {code, state} = req.query;
+
+    if (!code || !state) {
         return res.redirect(301, '/login');
     }
 
     axios({
-        url: process.env.BACKEND_URI + '/system/0',
+        url: process.env.BACKEND_URI + '/system/' + state,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
