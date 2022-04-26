@@ -53,7 +53,7 @@ function handler(req: any, res: any) {
 
                 }else {
                     console.log('ssssss');
-                    console.log(response)
+                    console.log(response);
                     // res.redirect(301, '/login');
                 }
             })
