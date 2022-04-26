@@ -30,7 +30,7 @@ import {GridView, TableView} from "@components/org";
 import {Cookie, Repository} from "@src/models";
 import {timeFormatter} from '@src/utils/helpers';
 import {RootState} from "@src/redux/reducers";
-import {orgDetailLoad, reposLoad} from "@src/redux/actions";
+import {orgDetailLoad, orgReposLoad, userReposLoad} from "@src/redux/actions";
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
 
 interface Props {
@@ -111,8 +111,17 @@ const Organization: NextPage<Props> = ({ cookie }) => {
     // Dispatch load detail action at the first load
     useEffect(() => {
         dispatch(orgDetailLoad('github', slug));
-        dispatch(reposLoad('github', slug));
     }, [cookie, dispatch, slug]);
+
+    useEffect(() => {
+        if(orgState.detail){
+            if (orgState.detail.type === 'User') {
+                dispatch(userReposLoad('github', slug));
+            }else {
+                dispatch(orgReposLoad('github', slug));
+            }
+        }
+    },[orgState.detail]);
 
     return (
         <Layout cookie={cookie}>
@@ -159,7 +168,7 @@ const Organization: NextPage<Props> = ({ cookie }) => {
                                     variant="subtitle1"
                                     color="text.secondary"
                                 >
-                                    Description:{' '}
+                                    Name:{' '}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>
@@ -167,7 +176,26 @@ const Organization: NextPage<Props> = ({ cookie }) => {
                                     orgState.loading ?
                                         <Skeleton variant="text"/>
                                         : <Typography variant="body2">
-                                            {orgState.detail?.description || '-'}
+                                            {orgState.detail?.name || '-'}
+                                        </Typography>
+                                }
+                            </Grid>
+                        </Grid>
+                        <Grid container>
+                            <Grid item xs={12} sm={2}>
+                                <Typography
+                                    variant="subtitle1"
+                                    color="text.secondary"
+                                >
+                                    Type:{' '}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={10}>
+                                {
+                                    orgState.loading ?
+                                        <Skeleton variant="text"/>
+                                        : <Typography variant="body2">
+                                            {orgState.detail?.type || '-'}
                                         </Typography>
                                 }
                             </Grid>
@@ -200,7 +228,7 @@ const Organization: NextPage<Props> = ({ cookie }) => {
                                     variant="subtitle1"
                                     color="text.secondary"
                                 >
-                                    Repositories:{' '}
+                                    Public Repos:{' '}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={10}>

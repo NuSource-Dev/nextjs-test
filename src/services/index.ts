@@ -29,6 +29,10 @@ export class BackendService {
     getOrgRepos(vcs: string, slug: string){
         return this.instance.get(`/${vcs}/orgs/${slug}/repos`);
     }
+
+    getUserRepos(vcs: string, slug: string){
+        return this.instance.get(`/${vcs}/users/${slug}/repos`);
+    }
 }
 
 export default new BackendService();

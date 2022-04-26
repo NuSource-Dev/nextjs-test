@@ -37,7 +37,7 @@ export class Organization {
     constructor(org: any){
         this.avatar_url = org.avatar_url;
         this.description = org.description;
-        this.display_name = org.login;
+        this.display_name = org.name;
         this.external_url = org.html_url;
         this.role = org.role;
         this.slug = org.login;
@@ -87,6 +87,8 @@ export class OrganizationDetail {
      * @github Provider.github
      */
     vcs: string;
+    /** type */
+    type: 'Organization' | 'User';
 
     constructor(org: any){
         this.avatar_url = org.avatar_url;
@@ -98,6 +100,7 @@ export class OrganizationDetail {
         this.repos = org.public_repos;
         this.slug = org.login;
         this.vcs = org.vcs;
+        this.type = org.type;
     }
 
     static fromJson(json: any):OrganizationDetail {

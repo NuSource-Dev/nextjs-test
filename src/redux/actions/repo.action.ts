@@ -21,12 +21,27 @@ export const repoLoadSuccess = (payload: RepoActionPayload): RepoAction =>
 export const repoLoadFailed = (payload: RepoActionPayload): RepoAction =>
     ({type: RepoType.fetchRepoFailed, payload});
 
-export const reposLoad = (vcs: string, slug: any) => (
+export const orgReposLoad = (vcs: string, slug: any) => (
     (dispatch: Dispatch, getState: any, service: BackendService) => {
 
         dispatch(repoLoading());
 
         service.getOrgRepos(vcs, slug)
+            .then((res: any) => {
+                dispatch(repoLoadSuccess({repos: Repository.fromJson(res.data, vcs)}));
+            })
+            .catch((error) => {
+                dispatch(repoLoadFailed({error}));
+            })
+    }
+);
+
+export const userReposLoad = (vcs: string, slug: any) => (
+    (dispatch: Dispatch, getState: any, service: BackendService) => {
+
+        dispatch(repoLoading());
+
+        service.getUserRepos(vcs, slug)
             .then((res: any) => {
                 dispatch(repoLoadSuccess({repos: Repository.fromJson(res.data, vcs)}));
             })
