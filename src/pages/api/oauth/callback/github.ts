@@ -24,7 +24,8 @@ function handler(req: any, res: any) {
             "Authorization": `Bearer ${process.env.API_SECRET}`
         }
     }).then(credentialRes => {
-
+        console.log(credentialRes.status);
+        console.log(credentialRes.data);
         axiosInstance.post(
             '/login/oauth/access_token',
             {
