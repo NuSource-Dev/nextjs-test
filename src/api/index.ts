@@ -32,7 +32,7 @@ export class ApiProvider {
         return this.currentApiProvider.name;
     }
 
-    provider (provider?: Provider): Api {
+    provider (provider: string): Api {
         if (provider === Provider.github) {
             return this.github;
         }else if (provider === Provider.gitlab) {

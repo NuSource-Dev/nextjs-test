@@ -49,13 +49,13 @@ export class Repository {
     /** Data provider
      * @github Provider.provider
      */
-    provider: Provider;
+    vcs: string;
     /**constructor
      * @param data
-     * @param provider: Provider
+     * @param vcs: Provider
      */
-    constructor(data: any, provider: Provider) {
-        this.provider = provider;
+    constructor(data: any, vcs: string) {
+        this.vcs = vcs;
         this.full_name = data.full_name;
         this.slug = data.name;
         this.private = data.private;
@@ -69,7 +69,7 @@ export class Repository {
         this.language = data.language;
     }
 
-    static fromJson(json: any[], provider: Provider = Provider.github){
-        return json.map((element: any) => new Repository(element, provider));
+    static fromJson(json: any[], vcs: string = 'github'){
+        return json.map((element: any) => new Repository(element, vcs));
     }
 }

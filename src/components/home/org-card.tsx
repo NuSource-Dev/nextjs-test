@@ -29,8 +29,8 @@ const OrgCard: FC<Props> = ({ org, onClick }) => {
         />
         <Grid container direction="column">
             <Grid item>{org.slug}</Grid>
-            <Grid item>{org.display_name}</Grid>
-            <Grid item sx={{ fontSize: 13, color: 'text.secondary' }}>{org.description}</Grid>
+            <Grid item>{org.type}</Grid>
+            <Grid item sx={{ fontSize: 13, color: 'text.secondary' }}>{org.role}</Grid>
         </Grid>
     </CustomCard>;
 };

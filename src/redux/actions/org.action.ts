@@ -1,8 +1,7 @@
 import {Dispatch} from "redux";
 import {Organization, OrganizationDetail} from "@src/models";
 import {OrgType} from "@src/redux/types";
-import {ApiProvider} from "@src/api";
-import {Provider} from "@src/api/provider-template";
+import {BackendService} from "@src/services";
 
 export interface OrgActionPayload {
     orgs?: Organization[];
@@ -28,27 +27,31 @@ export const orgDetailLoadSuccess = (payload: OrgActionPayload): OrgAction =>
 export const orgLoadFailed = (payload: OrgActionPayload): OrgAction =>
     ({type: OrgType.fetchOrgFailed, payload});
 
-export const orgLoad = (provider: Provider) => (
-    (dispatch: Dispatch, getState: any, api: ApiProvider) => {
+export const orgLoad = (vcs_slug: string) => (
+    (dispatch: Dispatch, getState: any, service: BackendService) => {
         dispatch(orgLoading());
 
-        api.provider(provider).fetchOrganizations()
+        service.getOrgs(vcs_slug)
             .then((res: any) => {
-                dispatch(orgLoadSuccess({orgs: Organization.getFromJson(res.data, api.getProvider)}));
+                console.log(res.data);
+                dispatch(orgLoadSuccess({
+                    orgs: Organization.getFromJson(res.data)
+                }));
             })
             .catch((error) => {
+                console.log(error);
                 dispatch(orgLoadFailed({orgs: [], error}));
             });
     }
 );
 
-export const orgDetailLoad = (slug: any, provider: Provider) => (
-    (dispatch: Dispatch, getState: any, api: ApiProvider) => {
+export const orgDetailLoad = (vcs: string, slug: any) => (
+    (dispatch: Dispatch, getState: any, service: BackendService) => {
         dispatch(orgLoading());
 
-        api.provider(provider).fetchOrgDetails(slug)
+        service.getOrgDetail(vcs, slug)
             .then((res: any) => {
-                dispatch(orgDetailLoadSuccess({detail: OrganizationDetail.getFromJson(res.data, api.getProvider)}));
+                dispatch(orgDetailLoadSuccess({detail: OrganizationDetail.fromJson(res.data)}));
             })
             .catch((error) => {
                 dispatch(orgLoadFailed({error}));

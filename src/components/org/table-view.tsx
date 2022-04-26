@@ -45,7 +45,7 @@ const TableView: FC<Props> = ({repositories, loading = false}) => {
                             </TableRow>
                             : repositories.length === 0 ?
                             <TableRow>
-                                <TableCell colSpan={7} align="center">No Result</TableCell>
+                                <TableCell colSpan={7} align="center">No Repositories</TableCell>
                             </TableRow>
                             : repositories.map((row) => (
                                 <TableRow

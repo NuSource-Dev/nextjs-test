@@ -1,14 +1,11 @@
 import {Repository} from "@src/models";
 import {RepoType} from "@src/redux/types";
 import {Dispatch} from "redux";
-import {ApiProvider} from "@src/api";
-import {Provider} from "@src/api/provider-template";
+import {BackendService} from "@src/services";
 
 export interface RepoActionPayload {
     repos?: Repository[];
     error?: any;
-    org_slug?: string | string[];
-    provider?: Provider;
 }
 
 export interface RepoAction {
@@ -24,14 +21,14 @@ export const repoLoadSuccess = (payload: RepoActionPayload): RepoAction =>
 export const repoLoadFailed = (payload: RepoActionPayload): RepoAction =>
     ({type: RepoType.fetchRepoFailed, payload});
 
-export const reposLoad = (payload: RepoActionPayload) => (
-    (dispatch: Dispatch, getState: any, api: ApiProvider) => {
+export const reposLoad = (vcs: string, slug: any) => (
+    (dispatch: Dispatch, getState: any, service: BackendService) => {
 
         dispatch(repoLoading());
 
-        api.provider(payload.provider).fetchOrgRepositories(payload.org_slug)
+        service.getOrgRepos(vcs, slug)
             .then((res: any) => {
-                dispatch(repoLoadSuccess({repos: Repository.fromJson(res.data, payload.provider)}));
+                dispatch(repoLoadSuccess({repos: Repository.fromJson(res.data, vcs)}));
             })
             .catch((error) => {
                 dispatch(repoLoadFailed({error}));

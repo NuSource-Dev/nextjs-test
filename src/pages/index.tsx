@@ -2,10 +2,10 @@ import React from "react";
 import {NextPage} from 'next';
 import {LandingPage, UserHome} from '@components/home';
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
-import {User} from "@src/models";
+import {Cookie} from "@src/models";
 
 interface Props {
-    user?: User
+    cookie?: Cookie
 }
 
 export const getServerSideProps = withSessionSsr(
@@ -14,17 +14,17 @@ export const getServerSideProps = withSessionSsr(
 
         return {
             props: {
-                user: user || null
+                cookie: user || null
             }
         };
     }
 );
 
-const Home: NextPage<Props> = ({user}) => {
+const Home: NextPage<Props> = ({cookie}) => {
 
     return (
-        user?
-            <UserHome user={user}/>
+        cookie?
+            <UserHome cookie={cookie}/>
             : <LandingPage/>
     );
 };

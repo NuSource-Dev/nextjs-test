@@ -163,7 +163,7 @@ const Header: FC<Props> = ({ user }) => {
                                     onKeyDown={handleListKeyDown}
                                 >
                                     <MenuItem>
-                                        Signed in as {user?.name} ({user?.vcs_slug})
+                                        Signed in as {user?.name} ({user?.vcs})
                                     </MenuItem>
                                     <MenuItem onClick={logout}>Sign out</MenuItem>
                                 </MenuList>

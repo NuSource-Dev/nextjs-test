@@ -1,6 +1,6 @@
 import withSessionRoute from '@src/utils/helpers/iron-session';
-import {Provider} from "@src/api/provider-template";
 import {createAxiosInstance} from "@src/utils/helpers";
+import axios from "axios";
 
 const axiosInstance = createAxiosInstance('https://github.com');
 
@@ -9,46 +9,55 @@ export default withSessionRoute(handler);
 function handler(req: any, res: any) {
     const {code} = req.query;
 
-    axiosInstance.post(
-        '/login/oauth/access_token',
-        {
-            client_id: process.env.GITHUB_CLIENT_ID,
-            client_secret: process.env.GITHUB_CLIENT_SECRET,
-            code
-        })
-        .then((response) => {
-            if (!!response.data.access_token) {
+    if (!code) {
+        return res.redirect(301, '/login');
+    }
 
-                const user = {
-                    access_token: response.data.access_token,
-                    vcs_slug: Provider.github
-                };
+    axios({
+        url: process.env.BACKEND_URI + '/system/0',
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+            "Accept": "*/*",
+            "Authorization": `Bearer ${process.env.API_SECRET}`
+        }
+    }).then(credentialRes => {
 
-                axiosInstance.get('/user', {
-                    baseURL: 'https://api.github.com',
-                    headers: {
-                        'Authorization': `Bearer ${response.data.access_token}`
-                    }
-                }).then(userRes => {
+        axiosInstance.post(
+            '/login/oauth/access_token',
+            {
+                client_id: credentialRes.data.client_id,
+                client_secret: credentialRes.data.client_secret,
+                code
+            })
+            .then((response) => {
+
+                if (!!response.data.access_token) {
+
                     req.session.user = {
-                        ...user,
-                        avatar_url: userRes.data.avatar_url,
-                        external_url: userRes.data.html_url,
-                        name: userRes.data.name,
-                        slug: userRes.data.login,
+                        app_id: credentialRes.data.app_id,
+                        access_token: response.data.access_token,
+                        expires_in: response.data.expires_in,
+                        refresh_token: response.data.refresh_token,
+                        refresh_token_expires_in: response.data.refresh_token_expires_in,
+                        vcs: 'github'
                     };
 
-                    req.session.save().then(() => {
-                        res.redirect(301, '/');
-                    });
-                }).catch((error) => {
+                    req.session.save()
+                        .then(() => {
+                            res.redirect(301, '/');
+                        });
+
+                }else {
                     res.redirect(301, '/login');
-                });
-            }else {
+                }
+            })
+            .catch((error) => {
                 res.redirect(301, '/login');
-            }
-        })
-        .catch((error) => {
-            res.redirect(301, '/login');
-        });
+            });
+    }).catch(error => {
+        res.redirect(301, '/login');
+    })
 }

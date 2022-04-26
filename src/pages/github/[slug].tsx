@@ -27,30 +27,29 @@ import Layout from "@src/layout/layout";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
 import {GridView, TableView} from "@components/org";
-import {Repository, User} from "@src/models";
+import {Cookie, Repository} from "@src/models";
 import {timeFormatter} from '@src/utils/helpers';
 import {RootState} from "@src/redux/reducers";
 import {orgDetailLoad, reposLoad} from "@src/redux/actions";
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
-import {Provider} from "@src/api/provider-template";
 
 interface Props {
-    user?: User
+    cookie?: Cookie
 }
 
 export const getServerSideProps = withSessionSsr(
     async function getServerSideProps({req}) {
-        const user = req.session.user;
+        const cookie = req.session.user;
 
         return {
             props: {
-                user: user || null
+                cookie: cookie || null
             }
         };
     }
 );
 
-const Organization: NextPage<Props> = ({ user }) => {
+const Organization: NextPage<Props> = ({ cookie }) => {
     // Get slug from the url
     const router = useRouter();
     const {slug} = router.query;
@@ -61,6 +60,7 @@ const Organization: NextPage<Props> = ({ user }) => {
     // Get redux state
     const repoState = useSelector((state: RootState) => state.repo);
     const orgState = useSelector((state: RootState) => state.org);
+    const userState = useSelector((state:RootState) =>state.user);
     const dispatch = useDispatch();
 
     // View mode: GridView | TableView
@@ -110,22 +110,22 @@ const Organization: NextPage<Props> = ({ user }) => {
 
     // Dispatch load detail action at the first load
     useEffect(() => {
-        dispatch(orgDetailLoad(slug, Provider.github));
-        dispatch(reposLoad({org_slug: slug, provider: Provider.github}));
-    }, [user, dispatch, slug]);
+        dispatch(orgDetailLoad('github', slug));
+        dispatch(reposLoad('github', slug));
+    }, [cookie, dispatch, slug]);
 
     return (
-        <Layout>
+        <Layout cookie={cookie}>
             <Head>
                 <title>Organization - NuSource</title>
                 <meta name="description" content="Organization"/>
             </Head>
-            <Header user={user}/>
+            <Header user={userState.user}/>
             <Content>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Typography color="text.primary">Github</Typography>
                     <Typography color="text.primary">
-                        {slug} ({orgState.detail?.display_name})
+                        {slug}
                     </Typography>
                 </Breadcrumbs>
                 <Box sx={{p: 3}}>
@@ -147,7 +147,7 @@ const Organization: NextPage<Props> = ({ user }) => {
                                             sx={{width: 25, height: 25}}
                                             variant="square"
                                             src={orgState.detail?.avatar_url}
-                                            alt={orgState.detail?.display_name}
+                                            alt={orgState.detail?.slug}
                                         />
                                 }
 
@@ -167,7 +167,7 @@ const Organization: NextPage<Props> = ({ user }) => {
                                     orgState.loading ?
                                         <Skeleton variant="text"/>
                                         : <Typography variant="body2">
-                                            {orgState.detail?.description}
+                                            {orgState.detail?.description || '-'}
                                         </Typography>
                                 }
                             </Grid>

@@ -1,4 +1,4 @@
-import {User} from "@src/models";
+import {Cookie} from "@src/models";
 import {withIronSessionApiRoute, withIronSessionSsr} from "iron-session/next";
 import {GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler} from "next";
 
@@ -24,8 +24,9 @@ export function withSessionSsr<
 }
 
 declare module "iron-session" {
+
     interface IronSessionData {
-        user?: User;
+        user?: Cookie;
     }
 }
 

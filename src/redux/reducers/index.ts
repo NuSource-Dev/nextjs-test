@@ -4,12 +4,14 @@ import { HYDRATE } from "next-redux-wrapper";
 import ThemeReducer from "./theme.reducer";
 import OrgReducer from './org.reducer';
 import RepoReducer from './repo.reducer';
+import userReducer from './user.reducer';
 
 const combinedReducer = combineReducers({
     router: routerReducer,
     theme: ThemeReducer,
     org: OrgReducer,
-    repo: RepoReducer
+    repo: RepoReducer,
+    user: userReducer
 });
 
 const RootReducer: Reducer<any, AnyAction> = (state: any, action) => {

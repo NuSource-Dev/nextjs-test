@@ -7,6 +7,7 @@ import {
 } from "connected-next-router";
 import Router from "next/router";
 import api from "@src/api";
+import service from '@src/services';
 import {loadState, saveState} from "../utils/helpers/storage.helper";
 import RootReducer from "./reducers/index";
 
@@ -31,7 +32,7 @@ if (asPath) {
 export const store = createStore(
     RootReducer,
     {...persistedState, ...initialState},
-    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api), routerMiddleware))
+    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(service), routerMiddleware))
 );
 
 store.subscribe(() => saveState(store.getState()));

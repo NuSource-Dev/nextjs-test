@@ -1,6 +1,4 @@
-import {Provider} from "@src/api/provider-template";
-
-export interface User {
+export class User {
     /** User avatar url
      * @github avatar_url
      */
@@ -21,20 +19,17 @@ export interface User {
      * @github github
      * @gitlab gitlab
      */
-    vcs_slug: Provider;
-    /** VCS Oauth 2.0 access token
-     * @github access_token
-     */
-    access_token: string;
+    vcs: string;
+
+    constructor(data: any) {
+        this.avatar_url = data.avatar_url;
+        this.external_url = data.html_url;
+        this.name = data.name;
+        this.slug = data.login;
+        this.vcs = data.vcs;
+    }
+
+    static fromJson(json: any) {
+        return new User(json);
+    };
 }
-
-export const user: User = {
-    avatar_url: 'https://avatars.githubusercontent.com/u/6311784?v=4',
-    external_url: 'https://github.com/rarkins',
-    name: 'Rhys Arkins',
-    slug: 'rarkins',
-    access_token: '',
-    vcs_slug: Provider.github
-};
-
-export default user;

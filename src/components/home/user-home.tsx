@@ -3,35 +3,36 @@ import {useRouter} from "next/router";
 import Head from "next/head";
 import { Box, Breadcrumbs, Grid, Typography } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {orgLoad} from "@src/redux/actions";
+import {loadUser, orgLoad} from "@src/redux/actions";
 import {RootState} from "@src/redux/reducers";
-import {Organization, User} from "@src/models";
+import {Cookie, Organization} from "@src/models";
 import Layout from "@src/layout/layout";
 import Header from "@src/layout/header";
 import Content from "@src/layout/content";
 import { OrgCard, OrgCardSkeleton } from "@components/home";
 
 interface Props {
-    user: User;
+    cookie: Cookie;
 }
 
-const UserHome: FC<Props> = ({user}) => {
+const UserHome: FC<Props> = ({cookie}) => {
     const router = useRouter();
     const orgState = useSelector((state: RootState) => state.org);
+    const userState = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (orgState.orgs.length === 0)
-            dispatch(orgLoad(user.vcs_slug));
-    }, [user, orgState.orgs.length, dispatch]);
+            dispatch(orgLoad(cookie.vcs));
+    }, [cookie, orgState.orgs.length, dispatch]);
 
     return (
-        <Layout>
+        <Layout cookie={cookie}>
             <Head>
                 <title>Home - NuSource</title>
                 <meta name="description" content="NuSource home page"/>
             </Head>
-            <Header user={user}/>
+            <Header user={userState.user}/>
             <Content>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Typography color="text.primary">Home</Typography>

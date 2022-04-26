@@ -1,10 +1,12 @@
-import {Provider} from "@src/api/provider-template";
-
 export class Organization {
     /** Organization avatar url
      * @github avatar_url
      */
     avatar_url: string;
+    /** Organization web url
+     * @github html_url
+     */
+    external_url: string;
     /** Organization description
      * @github description
      */
@@ -13,58 +15,38 @@ export class Organization {
      * @github login (it should be display name but api doesn't return display name)
      */
     display_name: string;
+    /** role */
+    role: string;
     /** Organization slug
      * @github login
      */
     slug: string;
-
-    /** Api provider
-     * @github Provider.github
-     * @gitlab Provider.gitlab
+    /** Account type
+     *
      */
-    provider: Provider;
+    type: 'Organization' | 'User';
+    /** Api provider
+     * @github github
+     * @gitlab gitlab
+     */
+    vcs: string;
 
     /** constructor
      * @param org
-     * @param provider
      */
-    constructor(org: any, provider: Provider){
-        this.provider = provider;
-        if (provider == Provider.github) {
-            this.avatar_url = org.avatar_url;
-            this.description = org.description;
-            this.display_name = org.login;
-            this.slug = org.login;
-        }else if (provider == Provider.gitlab) {
-            this.avatar_url = org.avatar_url;
-            this.description = org.description;
-            this.display_name = org.login;
-            this.slug = org.login;
-        }else {
-            this.avatar_url = org.avatar_url;
-            this.description = org.description;
-            this.display_name = org.login;
-            this.slug = org.login;
-        }
+    constructor(org: any){
+        this.avatar_url = org.avatar_url;
+        this.description = org.description;
+        this.display_name = org.login;
+        this.external_url = org.html_url;
+        this.role = org.role;
+        this.slug = org.login;
+        this.type = org.type;
+        this.vcs = org.vcs;
     }
 
-    /** Organization web url
-     * @github api response does't have this value so we will make it manually
-     */
-    get external_url(): string {
-        switch (this.provider) {
-            case Provider.github:
-                return `https://github.com/${this.slug}`;
-            case Provider.gitlab:
-                // Leave it as is for now
-                return `https://github.com/${this.slug}`;
-            default:
-                return `https://github.com/${this.slug}`;
-        }
-    }
-
-    static getFromJson(json: any[], provider: Provider):Organization[] {
-        return json.map((elem: any) => new Organization(elem, provider));
+    static getFromJson(json: any[]):Organization[] {
+        return json.map((elem: any) => new Organization(elem));
     }
 }
 
@@ -104,41 +86,21 @@ export class OrganizationDetail {
     /** Data provider
      * @github Provider.github
      */
-    provider: Provider;
+    vcs: string;
 
-    constructor(org: any, provider: Provider){
-        this.provider = provider;
-        if (provider == Provider.github) {
-            this.created_at = org.created_at;
-            this.avatar_url = org.avatar_url;
-            this.external_url = org.html_url;
-            this.description = org.description;
-            this.display_name = org.name;
-            this.slug = org.login;
-            this.email = org.email;
-            this.repos = org.public_repos;
-        }else if (provider == Provider.gitlab) {
-            this.created_at = org.created_at;
-            this.avatar_url = org.avatar_url;
-            this.external_url = org.html_url;
-            this.description = org.description;
-            this.display_name = org.name;
-            this.slug = org.login;
-            this.email = org.email;
-            this.repos = org.public_repos;
-        }else {
-            this.created_at = org.created_at;
-            this.avatar_url = org.avatar_url;
-            this.external_url = org.html_url;
-            this.description = org.description;
-            this.display_name = org.name;
-            this.slug = org.login;
-            this.email = org.email;
-            this.repos = org.public_repos;
-        }
+    constructor(org: any){
+        this.avatar_url = org.avatar_url;
+        this.created_at = org.created_at;
+        this.description = org.description;
+        this.display_name = org.name;
+        this.email = org.billing_email;
+        this.external_url = org.html_url;
+        this.repos = org.public_repos;
+        this.slug = org.login;
+        this.vcs = org.vcs;
     }
 
-    static getFromJson(json: any, provider: Provider):OrganizationDetail {
-        return new OrganizationDetail(json, provider);
+    static fromJson(json: any):OrganizationDetail {
+        return new OrganizationDetail(json);
     }
 }
