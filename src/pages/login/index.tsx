@@ -56,7 +56,7 @@ const Index: NextPage<Props> = ({ system, user }) => {
     });
 
     const githubLogin = (app: any) => {
-        router.push(`https://github.com/login/oauth/authorize?client_id=${app.client_id}&redirect_uri=${window.location.origin}/api/oauth/callback/github&login=&scope=repo,user&state=${app.app_id}`);
+        router.push(`https://github.com/login/oauth/authorize?client_id=${app.client_id}&redirect_uri=${window.location.origin}/api/oauth/callback/github&scope=repo,user&state=${app.app_id}`);
     };
 
     const getVCSApps = (vcs: string): any[] => {
