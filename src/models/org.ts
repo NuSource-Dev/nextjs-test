@@ -46,7 +46,7 @@ export class Organization {
     }
 
     static getFromJson(json: any[]):Organization[] {
-        return json.map((elem: any) => new Organization(elem));
+        return json.map((elem: any) => new Organization(elem.account));
     }
 }
 
