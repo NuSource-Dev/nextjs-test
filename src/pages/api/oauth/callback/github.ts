@@ -9,9 +9,9 @@ export default withSessionRoute(handler);
 function handler(req: any, res: any) {
     const {code} = req.query;
 
-    if (!code) {
-        return res.redirect(301, '/login');
-    }
+    // if (!code) {
+    //     return res.redirect(301, '/login');
+    // }
 
     axios({
         url: process.env.BACKEND_URI + '/system/0',
@@ -52,13 +52,19 @@ function handler(req: any, res: any) {
                         });
 
                 }else {
-                    res.redirect(301, '/login');
+                    console.log('ssssss');
+                    console.log(response)
+                    // res.redirect(301, '/login');
                 }
             })
             .catch((error) => {
-                res.redirect(301, '/login');
+                console.log('----------');
+                console.log(error);
+                // res.redirect(301, '/login');
             });
     }).catch(error => {
-        res.redirect(301, '/login');
+        console.log('-=========');
+        console.log(error);
+        // res.redirect(301, '/login');
     })
 }
