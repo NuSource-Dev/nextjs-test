@@ -48,7 +48,8 @@ function handler(req: any, res: any) {
                         expires_in: response.data.expires_in,
                         refresh_token: response.data.refresh_token,
                         refresh_token_expires_in: response.data.refresh_token_expires_in,
-                        vcs: 'github'
+                        vcs: 'github',
+                        expire_at: Math.round(new Date().getTime() /1000) + response.data.expires_in
                     };
 
                     req.session.save()

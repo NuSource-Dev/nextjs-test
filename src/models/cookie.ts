@@ -5,4 +5,5 @@ export interface Cookie{
     refresh_token: string;
     refresh_token_expires_in: number;
     vcs: string;
+    expire_at: number;
 }

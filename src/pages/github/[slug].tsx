@@ -28,7 +28,7 @@ import Header from "@src/layout/header";
 import Content from "@src/layout/content";
 import {GridView, TableView} from "@components/org";
 import {Cookie, Repository} from "@src/models";
-import {timeFormatter} from '@src/utils/helpers';
+import {refresh_session_on_expire, timeFormatter} from '@src/utils/helpers';
 import {RootState} from "@src/redux/reducers";
 import {orgDetailLoad, orgReposLoad, userReposLoad} from "@src/redux/actions";
 import {withSessionSsr} from "@src/utils/helpers/iron-session";
@@ -40,6 +40,7 @@ interface Props {
 export const getServerSideProps = withSessionSsr(
     async function getServerSideProps({req}) {
         const cookie = req.session.user;
+        await refresh_session_on_expire(req);
 
         return {
             props: {
