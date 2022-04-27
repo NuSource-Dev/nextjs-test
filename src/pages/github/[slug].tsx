@@ -121,7 +121,7 @@ const Organization: NextPage<Props> = ({ cookie }) => {
                 dispatch(orgReposLoad('github', slug));
             }
         }
-    },[orgState.detail]);
+    },[orgState.detail, dispatch]);
 
     return (
         <Layout cookie={cookie}>
