@@ -34,7 +34,7 @@ export const orgLoad = (vcs_slug: string) => (
         service.getOrgs(vcs_slug)
             .then((res: any) => {
                 dispatch(orgLoadSuccess({
-                    orgs: Organization.getFromJson(res.data)
+                    orgs: Organization.getFromList(res.data)
                 }));
             })
             .catch((error) => {

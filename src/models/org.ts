@@ -38,15 +38,15 @@ export class Organization {
         this.avatar_url = org.avatar_url;
         this.description = org.description;
         this.display_name = org.name;
-        this.external_url = org.html_url;
+        this.external_url = org.external_url;
         this.role = org.role;
-        this.slug = org.login;
+        this.slug = org.slug;
         this.type = org.type;
         this.vcs = org.vcs;
     }
 
-    static getFromJson(json: any[]):Organization[] {
-        return json.map((elem: any) => new Organization(elem.account));
+    static getFromList(json: any[]):Organization[] {
+        return json.map((elem: any) => new Organization(elem));
     }
 }
 
