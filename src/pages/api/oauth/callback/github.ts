@@ -20,7 +20,7 @@ function handler(req: any, res: any) {
     }
 
     axios({
-        url: process.env.BACKEND_URI + '/system/' + state,
+        url: process.env.BACKEND_URI + '/system/apps/' + state,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
