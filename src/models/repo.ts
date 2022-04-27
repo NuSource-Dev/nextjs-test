@@ -1,5 +1,3 @@
-import {Provider} from "@src/api/provider-template";
-
 export class Repository {
     /** Repository full name
      * @github full_name
