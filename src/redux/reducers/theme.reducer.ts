@@ -1,6 +1,6 @@
-import {getTheme, themeSettings} from "@src/utils/settings/theme/index.setting"
-import { ThemeAction } from "../actions";
+import { ThemeAction } from "@src/redux/actions";
 import { ThemeActionType } from "@src/redux/types";
+import {getTheme, themeSettings} from "@src/utils/settings/theme/index.setting"
 
 
 const initialState = {

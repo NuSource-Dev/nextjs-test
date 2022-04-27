@@ -1,6 +1,6 @@
 import {Organization, OrganizationDetail} from "@src/models";
 import {OrgAction} from "@src/redux/actions";
-import OrgType from "@src/redux/types/org.types";
+import {OrgType} from "@src/redux/types";
 
 interface OrgState {
     error?: any;

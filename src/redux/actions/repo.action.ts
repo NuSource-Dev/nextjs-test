@@ -1,6 +1,6 @@
+import {Dispatch} from "redux";
 import {Repository} from "@src/models";
 import {RepoType} from "@src/redux/types";
-import {Dispatch} from "redux";
 import {BackendService} from "@src/services";
 
 export interface RepoActionPayload {

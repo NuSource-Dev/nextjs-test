@@ -6,10 +6,9 @@ import {
     initialRouterState,
 } from "connected-next-router";
 import Router from "next/router";
-import api from "@src/api";
 import service from '@src/services';
 import {loadState, saveState} from "../utils/helpers/storage.helper";
-import RootReducer from "./reducers/index";
+import RootReducer from "@src/redux/reducers/index";
 
 const routerMiddleware = createRouterMiddleware();
 

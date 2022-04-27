@@ -1,6 +1,6 @@
-import {RepoAction} from "@src/redux/actions";
-import RepoType from "@src/redux/types/repo.types";
 import {Repository} from "@src/models";
+import {RepoAction} from "@src/redux/actions";
+import {RepoType} from "@src/redux/types";
 
 interface RepoState {
     error?: any;
