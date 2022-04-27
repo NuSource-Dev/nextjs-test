@@ -60,7 +60,7 @@ const Index: NextPage<Props> = ({ system, user }) => {
     };
 
     const getVCSApps = (vcs: string): any[] => {
-        return system.apps.filter((app: any) => app.app_type = vcs);
+        return system.apps.filter((app: any) => app.vcs = vcs);
     };
 
     const githubButton = () => {
